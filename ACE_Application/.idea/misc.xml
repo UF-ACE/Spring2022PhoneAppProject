@@ -3,13 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Matt/Documents/Personal_Projects/ACE/Phone_Application/Spring2022PhoneAppProject/ACE_Application/app/src/main/res/layout/activity_main.xml" value="0.11302083333333333" />
         <entry key="..\:/Users/brian/Spring2022PhoneAppProject/ACE_Application/app/src/main/res/layout/activity_display_message.xml" value="0.246875" />
         <entry key="..\:/Users/brian/Spring2022PhoneAppProject/ACE_Application/app/src/main/res/layout/activity_main.xml" value="0.176" />
       </map>
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
