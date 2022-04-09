@@ -1,4 +1,6 @@
 package com.ace_club_application.app;
 
-public class ConfirmationActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class ConfirmationActivity extends AppCompatActivity {
 }
