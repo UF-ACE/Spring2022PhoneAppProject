@@ -20,6 +20,7 @@ import io.realm.mongodb.User;
 
 public class MainActivity extends AppCompatActivity {
     String appId = "testapp-mftvr";
+    // ACE APP ID = "ace_android_application-sqneg"
 
     private Button button;
     private EditText email;
