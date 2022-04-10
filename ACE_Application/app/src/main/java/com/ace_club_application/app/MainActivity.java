@@ -1,7 +1,5 @@
 package com.ace_club_application.app;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +9,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import io.realm.Realm;
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -42,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
         //Get EditText boxes from main and button
         email = (EditText) findViewById(R.id.editMainEmailAddress);
         password = (EditText) findViewById(R.id.editMainPassword);
-
         button = (Button) findViewById(R.id.mainLoginButton);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
