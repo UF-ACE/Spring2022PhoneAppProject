@@ -16,25 +16,12 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import io.realm.Realm;
-import io.realm.mongodb.App;
-import io.realm.mongodb.AppConfiguration;
-import io.realm.mongodb.Credentials;
-import io.realm.mongodb.User;
 
 public class MainActivity extends AppCompatActivity {
-    String appId = "testapp-mftvr";
+    String appId = "ace_android_application-sqneg";
     // ACE APP ID = "ace_android_application-sqneg"
 
-    private Button button;
-    private EditText email;
-    private EditText password;
-    private TextView textView;
 
-    String emailString = "email";
-    String passwordString = "password";
-
-    Button loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
+
+        Button loginButton;
 
         String email = null;
         String password = null;
@@ -56,9 +45,8 @@ public class MainActivity extends AppCompatActivity {
             login = getIntent().getBooleanExtra("login", true);
         }
 
-
-
         loginButton = (Button) findViewById(R.id.loginButton);
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,49 +57,6 @@ public class MainActivity extends AppCompatActivity {
         //Initializes MongoDB realm on application
         Realm.init(this);
         App app = new App(new AppConfiguration.Builder(appId).build());
-
-        //Get EditText boxes from main and button
-        email = (EditText) findViewById(R.id.editMainEmailAddress);
-        password = (EditText) findViewById(R.id.editMainPassword);
-        button = (Button) findViewById(R.id.mainLoginButton);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                emailString = email.getText().toString();
-                passwordString = password.getText().toString();
-                Credentials credentials = Credentials.emailPassword(emailString, passwordString);
-                
-                //Logs a user in to the realm, tells users if successful or not
-                app.loginAsync(credentials, new App.Callback<User>() {
-                    @Override
-                    public void onResult(App.Result<User> result) {
-                        if (result.isSuccess()) {
-                            Log.v("User", "Logged in anonymously");
-                        } else {
-                            Log.v("User", "failed to log in");
-                        }
-                    }
-                });
-                openConfirmation();
-            }
-        });
-
-
-
-
-
-//        app.getEmailPassword().registerUserAsync(emailString, passwordString, it->{
-//            if (it.isSuccess()) {
-//                Log.v("User", "new user registered");
-//            }
-//            else {
-//                Log.v("User", "failed to log in");
-//            }
-//
-//        });
-
-        App app = new App(new AppConfiguration.Builder(Appid).build());
 
         //If we have a valid email and password
         if (email != null && password != null)
