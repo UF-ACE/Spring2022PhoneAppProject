@@ -29,13 +29,13 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
 
-        String username = null;
+        String email = null;
         String password = null;
         Boolean login = false;
 
         if (extras != null)
         {
-            username = getIntent().getStringExtra("username");
+            email = getIntent().getStringExtra("email");
             password = getIntent().getStringExtra("password");
             login = getIntent().getBooleanExtra("login", true);
         }
@@ -55,13 +55,13 @@ public class MainActivity extends AppCompatActivity {
 
         App app = new App(new AppConfiguration.Builder(Appid).build());
 
-        //If we have a valid username and password
-        if (username != null && password != null)
+        //If we have a valid email and password
+        if (email != null && password != null)
         {
             //If we're coming from the login page, login to the app
             if (login)
             {
-                Credentials credentials = Credentials.emailPassword(username, password);
+                Credentials credentials = Credentials.emailPassword(email, password);
                 app.loginAsync(credentials, new App.Callback<User>() {
                     @Override
                     public void onResult(App.Result<User> result) {
@@ -76,10 +76,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
-            //Otherwise, create a new user with the username and password.
+            //Otherwise, create a new user with the email and password.
             else
             {
-                app.getEmailPassword().registerUserAsync(username, password, it->{
+                app.getEmailPassword().registerUserAsync(email, password, it->{
                     if (it.isSuccess()){
                         Log.v("User", "registered with email");
                     }

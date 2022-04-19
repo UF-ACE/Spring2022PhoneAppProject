@@ -1,9 +1,5 @@
 package com.ace_club_application.app;
 
-import io.realm.Realm;
-import io.realm.mongodb.App;
-import io.realm.mongodb.AppConfiguration;
-
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,10 +10,11 @@ import android.widget.EditText;
 public class LoginActivity extends AppCompatActivity {
 
     Button confirmLoginButton;
+    Button registrationButton;
     EditText emailInput;
     EditText passwordInput;
 
-    String username;
+    String email;
     String password;
 
     @Override
@@ -26,25 +23,39 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         confirmLoginButton = (Button) findViewById(R.id.confirmLoginButton);
+        registrationButton = (Button) findViewById(R.id.registrationButton);
+
         emailInput = (EditText) findViewById(R.id.emailAddressText);
         passwordInput = (EditText) findViewById(R.id.passwordText);
 
         confirmLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                username = emailInput.getText().toString();
+                email = emailInput.getText().toString();
                 password = passwordInput.getText().toString();
-                openConfirmation(v);
+                loginUser(v);
+            }
+        });
+
+        registrationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openRegistration(v);
             }
         });
 
     }
 
-    public void openConfirmation(View v) {
+    public void loginUser(View v) {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("username", username);
+        intent.putExtra("email", email);
         intent.putExtra("password", password);
         intent.putExtra("login", true);
+        startActivity(intent);
+    }
+
+    public void openRegistration(View v) {
+        Intent intent = new Intent(this, RegistrationActivity.class);
         startActivity(intent);
     }
 }
