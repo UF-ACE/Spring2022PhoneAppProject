@@ -7,26 +7,30 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import io.realm.Realm;
+import io.realm.mongodb.App;
+import io.realm.mongodb.AppConfiguration;
+
 public class ConfirmationActivity extends AppCompatActivity {
+
+    Button confirmCodeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmation);
 
-        Button button = (Button) findViewById(R.id.button2);
-        button.setOnClickListener(new View.OnClickListener() {
+        confirmCodeButton = (Button) findViewById(R.id.confirmCodeButton);
+        confirmCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openConfirmation();
+                confirmCode(v);
             }
         });
-
-
     }
 
-    public void openConfirmation() {
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
+    public void confirmCode(View v) {
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 }
