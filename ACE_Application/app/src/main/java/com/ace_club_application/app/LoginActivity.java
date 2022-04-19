@@ -3,11 +3,18 @@ package com.ace_club_application.app;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import io.realm.mongodb.App;
+import io.realm.mongodb.AppConfiguration;
+import io.realm.mongodb.Credentials;
+import io.realm.mongodb.User;
+
 public class LoginActivity extends AppCompatActivity {
+
 
     Button confirmLoginButton;
     Button registrationButton;
@@ -22,6 +29,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        App app = new App(new AppConfiguration.Builder(BuildConfig.REALM_APP_ID).build());
+
         confirmLoginButton = (Button) findViewById(R.id.confirmLoginButton);
         registrationButton = (Button) findViewById(R.id.registrationButton);
 
@@ -33,6 +42,22 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 email = emailInput.getText().toString();
                 password = passwordInput.getText().toString();
+
+                Credentials credentials = Credentials.emailPassword(email, password);
+                app.loginAsync(credentials, new App.Callback<User>() {
+                    @Override
+                    public void onResult(App.Result<User> result) {
+                        if (result.isSuccess())
+                        {
+                            Log.v("User", "logged in via email and password");
+                        }
+                        else
+                        {
+                            Log.v("User", "failed to login");
+                        }
+                    }
+                });
+
                 loginUser(v);
             }
         });

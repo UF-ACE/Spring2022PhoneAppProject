@@ -1,12 +1,17 @@
 package com.ace_club_application.app;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import io.realm.mongodb.App;
+import io.realm.mongodb.AppConfiguration;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -32,6 +37,8 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+        App app = new App(new AppConfiguration.Builder(BuildConfig.REALM_APP_ID).build());
+
         confirmRegistrationButton = (Button) findViewById(R.id.confirmRegistrationButton);
 
         nameInput = (EditText) findViewById(R.id.nameText);
@@ -52,6 +59,14 @@ public class RegistrationActivity extends AppCompatActivity {
                 email = emailInput.getText().toString();
                 password = passwordInput.getText().toString();
                 confirmPassword = confirmPasswordInput.getText().toString();
+                app.getEmailPassword().registerUserAsync(email, password, it->{
+                    if (it.isSuccess()){
+                        Log.v("User", "registered with email");
+                    }
+                    else{
+                        Log.v("User", "was unsuccessful in registration");
+                    }
+                });
                 confirmRegistration(v);
             }
         });
