@@ -8,10 +8,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import org.bson.Document;
+
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
 import io.realm.mongodb.Credentials;
 import io.realm.mongodb.User;
+import io.realm.mongodb.mongo.MongoClient;
+import io.realm.mongodb.mongo.MongoCollection;
+import io.realm.mongodb.mongo.MongoDatabase;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -24,6 +29,8 @@ public class LoginActivity extends AppCompatActivity {
     String email;
     String password;
 
+    MongoDatabase mongoDatabase;
+    MongoClient mongoClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +57,10 @@ public class LoginActivity extends AppCompatActivity {
                         if (result.isSuccess())
                         {
                             Log.v("User", "logged in via email and password");
+                            User user = app.currentUser();
+                            mongoClient = user.getMongoClient("mongodb-atlas");
+                            mongoDatabase = mongoClient.getDatabase("ACEsite");
+                            MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("events");
                         }
                         else
                         {
