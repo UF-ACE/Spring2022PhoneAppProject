@@ -16,6 +16,7 @@ import org.bson.Document;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
+import io.realm.mongodb.Credentials;
 import io.realm.mongodb.User;
 import io.realm.mongodb.mongo.MongoClient;
 import io.realm.mongodb.mongo.MongoCollection;
@@ -79,39 +80,61 @@ public class RegistrationActivity extends AppCompatActivity {
                 }
                 else
                 {
+                    //If we pass the confirm password validation, register the user using
+                    //email and password
                     app.getEmailPassword().registerUserAsync(email, password, it->{
                         if (it.isSuccess()){
                             Log.v("User", "registered with email");
-                            User user = app.currentUser();
-                            MongoClient mongoClient =
-                                    user.getMongoClient("mongodb-atlas"); // service for MongoDB Atlas cluster containing custom user data
-                            MongoDatabase mongoDatabase =
-                                    mongoClient.getDatabase("ACEsite");
-                            MongoCollection<Document> mongoCollection =
-                                    mongoDatabase.getCollection("users");
-                            mongoCollection.insertOne(
-                                    new Document("userid", user.getId())
-                                            .append("name", name)
-                                            .append("email", email)
-                                            .append("phoneNumber", phoneNumber)
-                                            .append("major", major)
-                                            .append("year", year)
-                                            .append("score", 0)
-                                            .append("tier", "Standard"))
-                                    .getAsync(result -> {
-                                        if (result.isSuccess()) {
-                                            Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                                    + result.get().getInsertedId());
-                                        } else {
-                                            Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                        }
-                                    });
+                            //If we're successful registering the user, log them in to validate
+                            //their account and update the userID
+                            Credentials credentials = Credentials.emailPassword(email, password);
+                            app.loginAsync(credentials, new App.Callback<User>() {
+                                @Override
+                                public void onResult(App.Result<User> it) {
+                                    if (it.isSuccess()) {
+                                        Log.v("User", "logged in via email and password");
+                                        //If we're able to log the user in, we then add their data
+                                        //to an object in the DB
+                                        User user = app.currentUser();
+                                        MongoClient mongoClient =
+                                                user.getMongoClient("mongodb-atlas"); // service for MongoDB Atlas cluster containing custom user data
+                                        MongoDatabase mongoDatabase =
+                                                mongoClient.getDatabase("ACEsite");
+                                        MongoCollection<Document> mongoCollection =
+                                                mongoDatabase.getCollection("users");
+                                        mongoCollection.insertOne(
+                                                new Document("userid", user.getId())
+                                                        .append("name", name)
+                                                        .append("email", email)
+                                                        .append("phoneNumber", phoneNumber)
+                                                        .append("major", major)
+                                                        .append("year", Integer.valueOf(year))
+                                                        .append("score", 0)
+                                                        .append("tier", "Standard"))
+                                                .getAsync(result -> {
+                                                    if (result.isSuccess()) {
+                                                        Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+                                                                + result.get().getInsertedId());
+                                                        //Confirm registration is done asynchronously
+                                                        //to ensure the user's data enters the DB
+                                                        confirmRegistration(v);
+                                                    } else {
+                                                        Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+                                                    }
+                                                });
+                                    } else {
+                                        //If we're not able to log the user in, log an error message
+                                        Log.v("User", "failed to login");
+                                    }
+
+                                }
+                            });
                         }
                         else{
+                            //If we're not able to register the user, log a different error message
                             Log.v("User", "was unsuccessful in registration");
                         }
                     });
-                    confirmRegistration(v);
                 }
             }
         });
@@ -126,7 +149,7 @@ public class RegistrationActivity extends AppCompatActivity {
         intent.putExtra("phoneNumber", phoneNumber);
         intent.putExtra("email", email);
         intent.putExtra("password", password);
-        intent.putExtra("login", false);
+        intent.putExtra("login", true);
         startActivity(intent);
     }
 }

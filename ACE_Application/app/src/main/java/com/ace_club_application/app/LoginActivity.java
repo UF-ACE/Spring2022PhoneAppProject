@@ -1,12 +1,15 @@
 package com.ace_club_application.app;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.bson.Document;
 
@@ -26,7 +29,13 @@ public class LoginActivity extends AppCompatActivity {
     EditText emailInput;
     EditText passwordInput;
 
-    String email;
+    String name = "";
+    String email = "";
+    String phoneNumber = "";
+    String major = "";
+    int year = 0;
+    int score = 0;
+    String tier = "";
     String password;
 
     @Override
@@ -48,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
                 email = emailInput.getText().toString();
                 password = passwordInput.getText().toString();
 
+
                 Credentials credentials = Credentials.emailPassword(email, password);
                 app.loginAsync(credentials, new App.Callback<User>() {
                     @Override
@@ -55,43 +65,34 @@ public class LoginActivity extends AppCompatActivity {
                         if (it.isSuccess())
                         {
                             Log.v("User", "logged in via email and password");
-//                            User user = app.currentUser();
-//                            MongoClient mongoClient =
-//                                    user.getMongoClient("mongodb-atlas"); // service for MongoDB Atlas cluster containing custom user data
-//                            MongoDatabase mongoDatabase =
-//                                    mongoClient.getDatabase("ACEsite");
-//                            MongoCollection<Document> mongoCollection =
-//                                    mongoDatabase.getCollection("users");
-//                            String name = "name";
-//                            String major = "major";
-//                            int year = 1;
-//                            String phoneNumber = "123-456-7890";
-//                            mongoCollection.insertOne(
-//                                    new Document("userid", user.getId())
-//                                            .append("name", name)
-//                                            .append("email", email)
-//                                            .append("phoneNumber", phoneNumber)
-//                                            .append("major", major)
-//                                            .append("year", year)
-//                                            .append("score", 0)
-//                                            .append("tier", "Standard"))
-//                                    .getAsync(result -> {
-//                                        if (result.isSuccess()) {
-//                                            Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-//                                                    + result.get().getInsertedId());
-//                                        } else {
-//                                            Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-//                                        }
-//                                    });
+                            User user = app.currentUser();
+                            Document customUserData = user.getCustomData();
+                            try
+                            {
+                                name = (String) customUserData.get("name");
+                                phoneNumber = (String) customUserData.get("phoneNumber");
+                                major = (String) customUserData.get("major");
+                                tier = (String) customUserData.get("tier");
+                                year = (Integer) customUserData.get("year");
+                                score = (Integer) customUserData.get("score");
+                            }
+                            catch (NullPointerException ex) {
+
+                            }
+                            loginUser(v);
                         }
                         else
                         {
                             Log.v("User", "failed to login");
+                            Context context = getApplicationContext();
+                            CharSequence text = "Invalid username or password";
+                            int duration = Toast.LENGTH_SHORT;
+
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
                         }
                     }
                 });
-
-                loginUser(v);
             }
         });
 
@@ -106,8 +107,13 @@ public class LoginActivity extends AppCompatActivity {
 
     public void loginUser(View v) {
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("name", name);
         intent.putExtra("email", email);
-        intent.putExtra("password", password);
+        intent.putExtra("phoneNumber", phoneNumber);
+        intent.putExtra("major", major);
+        intent.putExtra("year", year);
+        intent.putExtra("score", score);
+        intent.putExtra("tier", tier);
         intent.putExtra("login", true);
         startActivity(intent);
     }
