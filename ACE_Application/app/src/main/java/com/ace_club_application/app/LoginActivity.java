@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import org.bson.Document;
 
+import org.bson.Document;
+
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
 import io.realm.mongodb.Credentials;
@@ -38,6 +40,8 @@ public class LoginActivity extends AppCompatActivity {
     String tier = "";
     String password;
 
+    MongoDatabase mongoDatabase;
+    MongoClient mongoClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +84,9 @@ public class LoginActivity extends AppCompatActivity {
 
                             }
                             loginUser(v);
+                            mongoClient = user.getMongoClient("mongodb-atlas");
+                            mongoDatabase = mongoClient.getDatabase("ACEsite");
+                            MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("events");
                         }
                         else
                         {
