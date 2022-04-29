@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ACE_Club_Application">
         <activity
-            android:name=".DisplayMessageActivity"
+            android:name=".HomePageActivity"
             android:exported="false" />
         <activity android:name=".MainActivity">
            <intent-filter>

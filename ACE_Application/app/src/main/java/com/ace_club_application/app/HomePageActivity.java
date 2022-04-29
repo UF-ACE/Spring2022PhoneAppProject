@@ -6,7 +6,7 @@ import androidx.cardview.widget.CardView;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class DisplayMessageActivity extends AppCompatActivity {
+public class HomePageActivity extends AppCompatActivity {
    /*
     @Override
     protected void onCreate(Bundle savedInstanceState) {

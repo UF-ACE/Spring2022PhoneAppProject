@@ -5,8 +5,10 @@
       <map>
         <entry key="..\:/Users/brian/Spring2022PhoneAppProject/ACE_Application/app/src/main/res/layout/activity_confirmation.xml" value="0.2359375" />
         <entry key="..\:/Users/brian/Spring2022PhoneAppProject/ACE_Application/app/src/main/res/layout/activity_display_message.xml" value="0.246875" />
+        <entry key="..\:/Users/brian/Spring2022PhoneAppProject/ACE_Application/app/src/main/res/layout/activity_home_page.xml" value="0.264" />
         <entry key="..\:/Users/brian/Spring2022PhoneAppProject/ACE_Application/app/src/main/res/layout/activity_login.xml" value="0.2359375" />
         <entry key="..\:/Users/brian/Spring2022PhoneAppProject/ACE_Application/app/src/main/res/layout/activity_main.xml" value="0.176" />
+        <entry key="..\:/Users/brian/Spring2022PhoneAppProject/ACE_Application/app/src/main/res/layout/activity_profile.xml" value="0.264" />
       </map>
     </option>
   </component>
